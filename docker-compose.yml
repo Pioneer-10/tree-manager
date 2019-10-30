@@ -11,3 +11,5 @@ services:
             - "8080:8080"
         volumes:
             - "./bin:/app/bin"
+            - "./lib:/app/lib"
+            - "./tpl:/app/tpl"

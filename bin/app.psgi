@@ -1,21 +1,22 @@
 #!/bin/env perl
 
+use FindBin;
+use File::Spec;
+
 use Plack::Builder;
 use Plack::Request;
 
-
-sub hello_world {
-	my $env = shift;
-
-	my $request = Plack::Request->new($env);
-	return [
-		200,
-		[],
-		['Hello, world!'],
-	];
+BEGIN {
+	my $path_lib = File::Spec->rel2abs('../lib', $FindBin::Bin);
+	require lib;
+	lib->import($path_lib);
 }
 
+use Application;
+
+
+my $app = Application->new;
 
 builder {
-	mount '/' => \&hello_world,
+	mount '/' => sub { $app->handle_request(Plack::Request->new(@_)) },
 }
